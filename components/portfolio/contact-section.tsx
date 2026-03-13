@@ -90,7 +90,7 @@ export function ContactSection() {
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-16 items-start max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start max-w-6xl mx-auto">
           {/* Contact Info */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
@@ -192,7 +192,7 @@ export function ContactSection() {
           >
             <motion.form
               onSubmit={handleSubmit}
-              className="bg-card/30 backdrop-blur-sm border border-border rounded-3xl p-8 md:p-10"
+              className="bg-card/30 backdrop-blur-sm border border-border rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-10"
               whileHover={{ borderColor: "oklch(0.78 0.14 45 / 0.3)" }}
               transition={{ duration: 0.3 }}
             >

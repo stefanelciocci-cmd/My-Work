@@ -135,7 +135,7 @@ export function ProjectsSection() {
         </motion.div>
 
         {/* Featured Projects */}
-        <div className="grid lg:grid-cols-2 gap-8 mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 mb-16">
           {projects
             .filter((p) => p.featured)
             .map((project, index) => (
@@ -160,7 +160,7 @@ export function ProjectsSection() {
                   transition={{ duration: 0.4 }}
                 >
                   {/* Image */}
-                  <div className="relative h-72 overflow-hidden">
+                  <div className="relative h-48 sm:h-60 lg:h-72 overflow-hidden">
                     <motion.div
                       className="absolute inset-0 bg-cover bg-center"
                       style={{ backgroundImage: `url(${project.image})` }}
@@ -183,8 +183,8 @@ export function ProjectsSection() {
                   </div>
 
                   {/* Content */}
-                  <div className="relative p-8 -mt-16">
-                    <h3 className="text-2xl font-bold mb-3 group-hover:text-primary transition-colors duration-300">
+                  <div className="relative p-5 sm:p-6 lg:p-8 -mt-12 sm:-mt-16">
+                    <h3 className="text-xl sm:text-2xl font-bold mb-2 sm:mb-3 group-hover:text-primary transition-colors duration-300">
                       {project.title}
                     </h3>
                     <p className="text-muted-foreground mb-6 leading-relaxed">
@@ -261,7 +261,7 @@ export function ProjectsSection() {
           </h3>
         </motion.div>
         
-        <div className="grid md:grid-cols-2 gap-6 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-12">
           {projects
             .filter((p) => !p.featured)
             .map((project, index) => (

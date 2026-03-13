@@ -296,15 +296,15 @@ export function HeroSection() {
                 <CodingVideo />
               </div>
 
-              {/* Decorative corner elements */}
-              <div className="absolute -top-2 -left-2 w-8 h-8 border-l-2 border-t-2 border-primary rounded-tl-xl" />
-              <div className="absolute -top-2 -right-2 w-8 h-8 border-r-2 border-t-2 border-accent rounded-tr-xl" />
-              <div className="absolute -bottom-2 -left-2 w-8 h-8 border-l-2 border-b-2 border-accent rounded-bl-xl" />
-              <div className="absolute -bottom-2 -right-2 w-8 h-8 border-r-2 border-b-2 border-primary rounded-br-xl" />
+              {/* Decorative corner elements - smaller on mobile */}
+              <div className="absolute -top-1 -left-1 md:-top-2 md:-left-2 w-6 h-6 md:w-8 md:h-8 border-l-2 border-t-2 border-primary rounded-tl-xl" />
+              <div className="absolute -top-1 -right-1 md:-top-2 md:-right-2 w-6 h-6 md:w-8 md:h-8 border-r-2 border-t-2 border-accent rounded-tr-xl" />
+              <div className="absolute -bottom-1 -left-1 md:-bottom-2 md:-left-2 w-6 h-6 md:w-8 md:h-8 border-l-2 border-b-2 border-accent rounded-bl-xl" />
+              <div className="absolute -bottom-1 -right-1 md:-bottom-2 md:-right-2 w-6 h-6 md:w-8 md:h-8 border-r-2 border-b-2 border-primary rounded-br-xl" />
 
-              {/* Floating labels */}
+              {/* Floating labels - hidden on mobile */}
               <motion.div
-                className="absolute -top-6 right-8 px-4 py-2 bg-card/90 backdrop-blur-md border border-primary/30 rounded-xl shadow-lg"
+                className="absolute -top-6 right-8 px-4 py-2 bg-card/90 backdrop-blur-md border border-primary/30 rounded-xl shadow-lg hidden md:block"
                 animate={{ y: [0, -6, 0] }}
                 transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
               >
@@ -314,7 +314,7 @@ export function HeroSection() {
               </motion.div>
               
               <motion.div
-                className="absolute -bottom-6 left-8 px-4 py-2 bg-card/90 backdrop-blur-md border border-accent/30 rounded-xl shadow-lg"
+                className="absolute -bottom-6 left-8 px-4 py-2 bg-card/90 backdrop-blur-md border border-accent/30 rounded-xl shadow-lg hidden md:block"
                 animate={{ y: [0, 6, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
               >
@@ -328,12 +328,12 @@ export function HeroSection() {
         </div>
       </motion.div>
 
-      {/* Scroll indicator */}
+      {/* Scroll indicator - hidden on mobile */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 2 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:block"
       >
         <motion.div
           animate={{ y: [0, 12, 0] }}

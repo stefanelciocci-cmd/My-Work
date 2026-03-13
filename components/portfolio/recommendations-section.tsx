@@ -94,7 +94,7 @@ export function RecommendationsSection() {
         </motion.div>
 
         {/* Recommendations grid */}
-        <motion.div style={{ y }} className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        <motion.div style={{ y }} className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-5xl mx-auto">
           {recommendations.map((rec, index) => (
             <motion.div
               key={rec.name}
@@ -105,7 +105,7 @@ export function RecommendationsSection() {
               className="group relative"
             >
               <motion.div
-                className="relative h-full bg-card/60 backdrop-blur-md border border-border rounded-3xl p-8 overflow-hidden"
+                className="relative h-full bg-card/60 backdrop-blur-md border border-border rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-8 overflow-hidden"
                 whileHover={{
                   borderColor: index === 0 ? "rgba(249, 168, 117, 0.5)" : "rgba(125, 211, 168, 0.5)",
                   boxShadow: index === 0 
@@ -136,7 +136,7 @@ export function RecommendationsSection() {
                 {/* Content */}
                 <div className="relative z-10">
                   {/* Quote */}
-                  <blockquote className="text-foreground/90 text-lg leading-relaxed mb-8 italic">
+                  <blockquote className="text-foreground/90 text-base sm:text-lg leading-relaxed mb-6 sm:mb-8 italic">
                     &ldquo;{rec.quote}&rdquo;
                   </blockquote>
 

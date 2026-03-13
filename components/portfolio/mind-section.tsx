@@ -20,9 +20,10 @@ import {
 } from "lucide-react";
 
 // Define orbital rings with their planets (icons) - now with descriptions
-const orbits = [
+// Radii will be scaled based on container size
+const orbitsConfig = [
   {
-    radius: 140,
+    radiusPercent: 0.22, // percentage of container
     duration: 25,
     direction: 1,
     planets: [
@@ -32,7 +33,7 @@ const orbits = [
     ],
   },
   {
-    radius: 220,
+    radiusPercent: 0.34,
     duration: 40,
     direction: -1,
     planets: [
@@ -43,7 +44,7 @@ const orbits = [
     ],
   },
   {
-    radius: 300,
+    radiusPercent: 0.46,
     duration: 55,
     direction: 1,
     planets: [
@@ -147,7 +148,7 @@ function Planet({
     >
       <div className="relative -translate-x-1/2 -translate-y-1/2">
         <motion.div
-          className="p-3 md:p-4 bg-card/90 backdrop-blur-md border border-border rounded-2xl shadow-xl cursor-pointer relative"
+          className="p-2 sm:p-3 md:p-4 bg-card/90 backdrop-blur-md border border-border rounded-xl sm:rounded-2xl shadow-xl cursor-pointer relative"
           animate={{
             scale: isHovered ? 1.3 : 1,
             borderColor: isHovered ? color : undefined,
@@ -159,20 +160,20 @@ function Planet({
         >
           {/* Glow effect behind icon */}
           <div
-            className="absolute inset-0 rounded-2xl opacity-40 blur-lg"
+            className="absolute inset-0 rounded-xl sm:rounded-2xl opacity-40 blur-lg"
             style={{ backgroundColor: color }}
           />
-          <Icon className="w-5 h-5 md:w-6 md:h-6 relative z-10" style={{ color }} />
+          <Icon className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 relative z-10" style={{ color }} />
         </motion.div>
 
-        {/* Popup under the icon */}
+        {/* Popup under the icon - hidden on mobile */}
         {isHovered && (
           <motion.div
             initial={{ opacity: 0, y: -10, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.9 }}
             transition={{ duration: 0.2 }}
-            className="absolute top-full left-1/2 -translate-x-1/2 mt-4 z-50 w-64"
+            className="absolute top-full left-1/2 -translate-x-1/2 mt-4 z-50 w-64 hidden md:block"
           >
             <div 
               className="bg-card/95 backdrop-blur-xl border-2 rounded-2xl p-4 shadow-2xl"
@@ -257,7 +258,9 @@ function OrbitRing({
 
 export function MindSection() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const orbitalRef = useRef<HTMLDivElement>(null);
   const mousePos = useMouseParallax(0.02);
+  const [containerSize, setContainerSize] = useState(650);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -266,6 +269,24 @@ export function MindSection() {
 
   const y = useTransform(scrollYProgress, [0, 1], [60, -60]);
   const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.95, 1, 0.95]);
+
+  // Track container size for responsive orbits
+  useEffect(() => {
+    const updateSize = () => {
+      if (orbitalRef.current) {
+        setContainerSize(orbitalRef.current.offsetWidth);
+      }
+    };
+    updateSize();
+    window.addEventListener('resize', updateSize);
+    return () => window.removeEventListener('resize', updateSize);
+  }, []);
+
+  // Calculate responsive orbits
+  const orbits = orbitsConfig.map(orbit => ({
+    ...orbit,
+    radius: containerSize * orbit.radiusPercent,
+  }));
 
   return (
     <section ref={containerRef} id="mind" className="relative py-32 overflow-hidden">
@@ -325,13 +346,16 @@ export function MindSection() {
         </motion.div>
 
         {/* Orbital system container */}
-        <div className="relative flex justify-center items-center" style={{ minHeight: '700px' }}>
-          <div className="relative" style={{ width: '650px', height: '650px' }}>
+        <div className="relative flex justify-center items-center min-h-[400px] md:min-h-[600px] lg:min-h-[700px]">
+          <div ref={orbitalRef} className="relative w-[320px] h-[320px] sm:w-[450px] sm:h-[450px] md:w-[550px] md:h-[550px] lg:w-[650px] lg:h-[650px]">
             {/* Orbit rings with planets */}
             {orbits.map((orbit, index) => (
               <OrbitRing 
                 key={index} 
-                {...orbit} 
+                radius={orbit.radius}
+                duration={orbit.duration}
+                direction={orbit.direction}
+                planets={orbit.planets}
                 index={index} 
               />
             ))}
@@ -339,7 +363,7 @@ export function MindSection() {
             {/* Central head (the sun) */}
             <motion.div
               style={{ y, scale }}
-              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-44 h-44 md:w-52 md:h-52 z-30"
+              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 sm:w-32 sm:h-32 md:w-44 md:h-44 lg:w-52 lg:h-52 z-30"
             >
               {/* Pulsing glow rings */}
               <motion.div
