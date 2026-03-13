@@ -244,12 +244,12 @@ export function GameSection() {
             y: mousePos.y * 0.3,
           }}
         >
-          <div className="grid grid-cols-4 gap-3 md:gap-4 p-6 md:p-8 bg-card/30 backdrop-blur-sm border border-border rounded-3xl">
+          <div className="grid grid-cols-4 gap-2 sm:gap-3 md:gap-4 p-4 sm:p-6 md:p-8 bg-card/30 backdrop-blur-sm border border-border rounded-2xl sm:rounded-3xl">
             {cards.map((card) => (
               <motion.button
                 key={card.uniqueId}
                 onClick={() => handleCardClick(card.uniqueId)}
-                className="relative aspect-square rounded-2xl text-xl md:text-2xl font-bold cursor-pointer perspective-1000"
+                className="relative aspect-square rounded-xl sm:rounded-2xl text-sm sm:text-xl md:text-2xl font-bold cursor-pointer perspective-1000"
                 whileHover={{ scale: card.isFlipped || card.isMatched ? 1 : 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 style={{ transformStyle: "preserve-3d" }}
@@ -262,7 +262,7 @@ export function GameSection() {
                       animate={{ rotateY: 0, opacity: 1 }}
                       exit={{ rotateY: -180, opacity: 0 }}
                       transition={{ duration: 0.3 }}
-                      className="absolute inset-0 rounded-2xl flex items-center justify-center border-2"
+                      className="absolute inset-0 rounded-xl sm:rounded-2xl flex items-center justify-center border-2"
                       style={{ 
                         backgroundColor: `${card.color}15`,
                         borderColor: card.color,
@@ -279,9 +279,9 @@ export function GameSection() {
                       animate={{ rotateY: 0, opacity: 1 }}
                       exit={{ rotateY: 180, opacity: 0 }}
                       transition={{ duration: 0.3 }}
-                      className="absolute inset-0 bg-secondary/50 border-2 border-border rounded-2xl flex items-center justify-center hover:border-primary/50 transition-colors"
+                      className="absolute inset-0 bg-secondary/50 border-2 border-border rounded-xl sm:rounded-2xl flex items-center justify-center hover:border-primary/50 transition-colors"
                     >
-                      <Sparkles className="w-5 h-5 text-primary/40" />
+                      <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-primary/40" />
                     </motion.div>
                   )}
                 </AnimatePresence>

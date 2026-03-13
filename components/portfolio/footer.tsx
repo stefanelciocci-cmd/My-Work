@@ -26,7 +26,7 @@ export function Footer() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="flex flex-col md:flex-row items-center justify-between gap-8"
+          className="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8"
         >
           <div className="flex items-center gap-2 text-muted-foreground">
             <span>Crafted with</span>
@@ -46,12 +46,6 @@ export function Footer() {
           </div>
 
           <div className="flex items-center gap-8 text-sm text-muted-foreground">
-            <Link href="#" className="hover:text-primary transition-colors duration-300">
-              Privacy
-            </Link>
-            <Link href="#" className="hover:text-primary transition-colors duration-300">
-              Terms
-            </Link>
             <span className="text-foreground font-mono">&copy; {currentYear}</span>
           </div>
 

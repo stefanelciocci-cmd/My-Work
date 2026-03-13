@@ -109,7 +109,7 @@ export function SkillsSection() {
         </motion.div>
 
         {/* Skills Grid - without progress bars */}
-        <div className="grid md:grid-cols-3 gap-8 mb-24">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-24">
           {skills.map((category, categoryIndex) => (
             <motion.div
               key={category.category}

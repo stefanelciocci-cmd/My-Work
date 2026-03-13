@@ -13,10 +13,21 @@ const projects = [
       "Sole developer of a multi-tenant platform serving 30+ shopping centres across Eastern Europe. Built with Next.js and Strapi CMS for seamless content management.",
     tags: ["Next.js", "Strapi", "Multi-tenant"],
     image: "/images/coding-desk.jpg",
-    liveUrl: "#",
-    githubUrl: "#",
+    liveUrl: "https://ozas.lt",
+    githubUrl: null,
     featured: true,
     color: "#f9a875",
+  },
+  {
+    title: "The Population Project",
+    description:
+      "Full-stack role across a website, data scraper, and file management dashboard with AI capabilities.",
+    tags: ["Next.js", "Redis", "OpenAI"],
+    image: "/images/population-project.png",
+    liveUrl: "https://thepopulationproject.org/",
+    githubUrl: null,
+    featured: true,
+    color: "#7dd3a8",
   },
   {
     title: "Sensodyne AI Tool",
@@ -24,19 +35,8 @@ const projects = [
       "AI-powered misinformation detection tool monitoring dental health content on TikTok, Instagram & YouTube. Built with Express.js, Redis, and OpenAI integration.",
     tags: ["Express.js", "Redis", "OpenAI", "Social APIs"],
     image: "/images/creative-head.jpg",
-    liveUrl: "#",
-    githubUrl: "#",
-    featured: true,
-    color: "#7dd3a8",
-  },
-  {
-    title: "The Population Project",
-    description:
-      "Full-stack role across a website, data scraper, and file management dashboard with AI capabilities.",
-    tags: ["Next.js", "Redis", "OpenAI"],
-    image: "/images/coding-desk.jpg",
-    liveUrl: "#",
-    githubUrl: "#",
+    liveUrl: null,
+    githubUrl: null,
     featured: false,
     color: "#f9a875",
   },
@@ -46,8 +46,8 @@ const projects = [
       "AI tool that auto-generates structured Statements of Work from project descriptions.",
     tags: ["Next.js", "OpenAI", "TypeScript"],
     image: "/images/creative-head.jpg",
-    liveUrl: "#",
-    githubUrl: "#",
+    liveUrl: null,
+    githubUrl: null,
     featured: false,
     color: "#7dd3a8",
   },
@@ -57,8 +57,8 @@ const projects = [
       "Led frontend development of a full-scale dashboard enabling users to connect and orchestrate bots across multiple platforms with automated responses.",
     tags: ["React.js", "Dashboard", "Automation"],
     image: "/images/coding-desk.jpg",
-    liveUrl: "#",
-    githubUrl: "#",
+    liveUrl: null,
+    githubUrl: null,
     featured: false,
     color: "#c4a1ff",
   },
@@ -68,8 +68,8 @@ const projects = [
       "Sole developer on two SaaS presentational websites with CMS, email notifications & SEO optimization.",
     tags: ["Strapi", "Next.js", "SEO"],
     image: "/images/creative-head.jpg",
-    liveUrl: "#",
-    githubUrl: "#",
+    liveUrl: null,
+    githubUrl: null,
     featured: false,
     color: "#e8d4b8",
   },
@@ -135,7 +135,7 @@ export function ProjectsSection() {
         </motion.div>
 
         {/* Featured Projects */}
-        <div className="grid lg:grid-cols-2 gap-8 mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 mb-16">
           {projects
             .filter((p) => p.featured)
             .map((project, index) => (
@@ -160,7 +160,7 @@ export function ProjectsSection() {
                   transition={{ duration: 0.4 }}
                 >
                   {/* Image */}
-                  <div className="relative h-72 overflow-hidden">
+                  <div className="relative h-48 sm:h-60 lg:h-72 overflow-hidden">
                     <motion.div
                       className="absolute inset-0 bg-cover bg-center"
                       style={{ backgroundImage: `url(${project.image})` }}
@@ -183,8 +183,8 @@ export function ProjectsSection() {
                   </div>
 
                   {/* Content */}
-                  <div className="relative p-8 -mt-16">
-                    <h3 className="text-2xl font-bold mb-3 group-hover:text-primary transition-colors duration-300">
+                  <div className="relative p-5 sm:p-6 lg:p-8 -mt-12 sm:-mt-16">
+                    <h3 className="text-xl sm:text-2xl font-bold mb-2 sm:mb-3 group-hover:text-primary transition-colors duration-300">
                       {project.title}
                     </h3>
                     <p className="text-muted-foreground mb-6 leading-relaxed">
@@ -205,21 +205,32 @@ export function ProjectsSection() {
 
                     {/* Links */}
                     <div className="flex items-center gap-6">
-                      <Link
-                        href={project.liveUrl}
-                        className="flex items-center gap-2 font-medium transition-colors duration-300"
-                        style={{ color: project.color }}
-                      >
-                        <ExternalLink className="w-4 h-4" />
-                        Live Demo
-                      </Link>
-                      <Link
-                        href={project.githubUrl}
-                        className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors duration-300"
-                      >
-                        <Github className="w-4 h-4" />
-                        Source
-                      </Link>
+                      {project.liveUrl && (
+                        <Link
+                          href={project.liveUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2 font-medium transition-colors duration-300"
+                          style={{ color: project.color }}
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                          Live Demo
+                        </Link>
+                      )}
+                      {project.githubUrl && (
+                        <Link
+                          href={project.githubUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors duration-300"
+                        >
+                          <Github className="w-4 h-4" />
+                          Source
+                        </Link>
+                      )}
+                      {!project.liveUrl && !project.githubUrl && (
+                        <span className="text-muted-foreground text-sm">Private Project</span>
+                      )}
                     </div>
                   </div>
 
@@ -250,7 +261,7 @@ export function ProjectsSection() {
           </h3>
         </motion.div>
         
-        <div className="grid md:grid-cols-2 gap-6 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-12">
           {projects
             .filter((p) => !p.featured)
             .map((project, index) => (
@@ -278,18 +289,26 @@ export function ProjectsSection() {
                       <Folder className="w-5 h-5" style={{ color: project.color }} />
                     </div>
                     <div className="flex items-center gap-3">
-                      <Link
-                        href={project.githubUrl}
-                        className="text-muted-foreground hover:text-foreground transition-colors p-2 rounded-lg hover:bg-secondary/50"
-                      >
-                        <Github className="w-5 h-5" />
-                      </Link>
-                      <Link
-                        href={project.liveUrl}
-                        className="text-muted-foreground hover:text-foreground transition-colors p-2 rounded-lg hover:bg-secondary/50"
-                      >
-                        <ExternalLink className="w-5 h-5" />
-                      </Link>
+                      {project.githubUrl && (
+                        <Link
+                          href={project.githubUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-muted-foreground hover:text-foreground transition-colors p-2 rounded-lg hover:bg-secondary/50"
+                        >
+                          <Github className="w-5 h-5" />
+                        </Link>
+                      )}
+                      {project.liveUrl && (
+                        <Link
+                          href={project.liveUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-muted-foreground hover:text-foreground transition-colors p-2 rounded-lg hover:bg-secondary/50"
+                        >
+                          <ExternalLink className="w-5 h-5" />
+                        </Link>
+                      )}
                     </div>
                   </div>
                   <h4 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors duration-300">
@@ -314,26 +333,7 @@ export function ProjectsSection() {
             ))}
         </div>
 
-        {/* View All Button */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="text-center"
-        >
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            <Link
-              href="#"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-card/50 backdrop-blur-sm border border-border rounded-2xl font-medium transition-all duration-300 hover:border-primary/50 hover:text-primary"
-            >
-              View All Projects
-              <ArrowUpRight className="w-4 h-4" />
-            </Link>
-          </motion.div>
-        </motion.div>
+
       </div>
     </section>
   );
