@@ -5,18 +5,18 @@ import Image from "next/image";
 import { useRef, useState, useEffect } from "react";
 import { useMouseParallax } from "@/hooks/use-parallax";
 import {
-  Figma,
   Code2,
   Database,
-  Palette,
   Lightbulb,
   Rocket,
-  Coffee,
+  Wine,
   Music,
   Gamepad2,
   BookOpen,
   Sparkles,
-  Zap,
+  Star,
+  CircleDot,
+  Brain,
 } from "lucide-react";
 
 // Define orbital rings with their planets (icons) - now with descriptions
@@ -27,9 +27,9 @@ const orbitsConfig = [
     duration: 25,
     direction: 1,
     planets: [
-      { Icon: Code2, label: "Code", color: "#f9a875", angle: 0, description: "TypeScript, React, Next.js - crafting clean, maintainable code that scales." },
-      { Icon: Figma, label: "Design", color: "#7dd3a8", angle: 120, description: "Translating designs into pixel-perfect, responsive interfaces." },
-      { Icon: Database, label: "Data", color: "#f9a875", angle: 240, description: "PostgreSQL, Redis, Strapi - building robust data architectures." },
+      { Icon: Code2, label: "Coding", color: "#f9a875", angle: 0, description: "More than a skill - it's a lifestyle. Building elegant solutions one line at a time." },
+      { Icon: Database, label: "Data", color: "#7dd3a8", angle: 120, description: "Optimizing slow interactions keeps my mind sharp - every millisecond matters." },
+      { Icon: Brain, label: "AI", color: "#f9a875", angle: 240, description: "AI is the future. It makes us more free and efficient - a must to master." },
     ],
   },
   {
@@ -37,10 +37,10 @@ const orbitsConfig = [
     duration: 40,
     direction: -1,
     planets: [
-      { Icon: Palette, label: "Art", color: "#7dd3a8", angle: 30, description: "Bringing creativity and aesthetic sensibility to every project." },
-      { Icon: Lightbulb, label: "Ideas", color: "#f9a875", angle: 120, description: "Turning complex problems into elegant, simple solutions." },
-      { Icon: Rocket, label: "Launch", color: "#7dd3a8", angle: 210, description: "From concept to production - shipping products that work." },
-      { Icon: Coffee, label: "Fuel", color: "#f9a875", angle: 300, description: "Powered by curiosity and the occasional espresso." },
+      { Icon: CircleDot, label: "Football", color: "#7dd3a8", angle: 30, description: "In my free time, running on the pitch clears my mind and recharges my spirit." },
+      { Icon: Lightbulb, label: "Ideas", color: "#f9a875", angle: 120, description: "The best ideas come when you least expect them - creativity strikes like lightning." },
+      { Icon: Rocket, label: "Momentum", color: "#7dd3a8", angle: 210, description: "No stress, just keep moving forward. Everything works out in the end." },
+      { Icon: Wine, label: "Social", color: "#f9a875", angle: 300, description: "A spritz with friends, good conversations - socializing makes me smile." },
     ],
   },
   {
@@ -48,11 +48,11 @@ const orbitsConfig = [
     duration: 55,
     direction: 1,
     planets: [
-      { Icon: Music, label: "Flow", color: "#7dd3a8", angle: 0, description: "Finding the rhythm in code - lofi beats and focused sessions." },
-      { Icon: Gamepad2, label: "Fun", color: "#f9a875", angle: 72, description: "Gamification and interactive experiences that engage users." },
-      { Icon: BookOpen, label: "Learn", color: "#7dd3a8", angle: 144, description: "Always learning - new frameworks, patterns, and perspectives." },
-      { Icon: Sparkles, label: "Magic", color: "#f9a875", angle: 216, description: "AI integration - OpenAI, automation, and intelligent features." },
-      { Icon: Zap, label: "Energy", color: "#7dd3a8", angle: 288, description: "High energy, fast iteration, and pragmatic engineering." },
+      { Icon: Music, label: "Music", color: "#7dd3a8", angle: 0, description: "Music is life. The perfect soundtrack turns coding into an experience." },
+      { Icon: Gamepad2, label: "Gaming", color: "#f9a875", angle: 72, description: "Gaming with friends makes me feel alive - teamwork and fun combined." },
+      { Icon: BookOpen, label: "Learning", color: "#7dd3a8", angle: 144, description: "I don't read books - I read code, documentation, and the latest in tech." },
+      { Icon: Sparkles, label: "Magic", color: "#f9a875", angle: 216, description: "The spark that turns ordinary projects into extraordinary experiences." },
+      { Icon: Star, label: "Calm", color: "#7dd3a8", angle: 288, description: "When stressed, count to three. Everything becomes easier with a clear mind." },
     ],
   },
 ];
@@ -397,7 +397,7 @@ export function MindSection() {
             </motion.div>
           </div>
 
-          {/* Decorative particles around the orbital system */}
+          {/* Decorative particles around the orbital system - slower animation */}
           {[...Array(15)].map((_, i) => (
             <motion.div
               key={i}
@@ -407,13 +407,13 @@ export function MindSection() {
                 top: `${15 + Math.random() * 70}%`,
               }}
               animate={{
-                opacity: [0.3, 0.9, 0.3],
-                scale: [1, 1.8, 1],
+                opacity: [0.2, 0.7, 0.2],
+                scale: [1, 1.5, 1],
               }}
               transition={{
-                duration: 2 + Math.random() * 2,
+                duration: 6 + Math.random() * 4,
                 repeat: Infinity,
-                delay: Math.random() * 2,
+                delay: Math.random() * 3,
               }}
             />
           ))}

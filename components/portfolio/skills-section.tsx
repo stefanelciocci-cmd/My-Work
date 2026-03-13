@@ -8,7 +8,7 @@ const skills = [
   {
     category: "Frontend",
     color: "#f9a875",
-    items: ["Next.js", "React.js", "TypeScript", "HTML/CSS"],
+    items: ["Next.js", "React.js", "TypeScript", "TailwindCSS", "HTML/CSS"],
   },
   {
     category: "Backend",
@@ -31,6 +31,7 @@ const techStack = [
   { name: "Next.js", color: "#f9a875" },
   { name: "React.js", color: "#e8d4b8" },
   { name: "TypeScript", color: "#7dd3a8" },
+  { name: "TailwindCSS", color: "#7dd3a8" },
   { name: "Node.js", color: "#f9a875" },
   { name: "Express.js", color: "#7dd3a8" },
   { name: "Strapi CMS", color: "#e8d4b8" },

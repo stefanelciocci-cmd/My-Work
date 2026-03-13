@@ -2,24 +2,24 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
-import { RotateCcw, Trophy, Sparkles, Zap, Timer, Gamepad2 } from "lucide-react";
+import { RotateCcw, Trophy, Sparkles, Zap, Timer, Gamepad2, Code2, Database, Rocket, Music, Lightbulb, Star, Brain, Coffee, type LucideIcon } from "lucide-react";
 import { useMouseParallax } from "@/hooks/use-parallax";
 
-// Tech icons for the memory game (using SVG-style representations)
+// Tech icons for the memory game using Lucide icons
 const techIcons = [
-  { id: 1, icon: "R", name: "React", color: "#61dafb" },
-  { id: 2, icon: "TS", name: "TypeScript", color: "#3178c6" },
-  { id: 3, icon: "N", name: "Node.js", color: "#7dd3a8" },
-  { id: 4, icon: "Py", name: "Python", color: "#f9a875" },
-  { id: 5, icon: "Nx", name: "Next.js", color: "#e8d4b8" },
-  { id: 6, icon: "DB", name: "Database", color: "#7dd3a8" },
-  { id: 7, icon: "3D", name: "Three.js", color: "#f9a875" },
-  { id: 8, icon: "Go", name: "Go", color: "#00add8" },
+  { id: 1, Icon: Code2, name: "Code", color: "#f9a875" },
+  { id: 2, Icon: Database, name: "Database", color: "#7dd3a8" },
+  { id: 3, Icon: Rocket, name: "Rocket", color: "#f9a875" },
+  { id: 4, Icon: Music, name: "Music", color: "#7dd3a8" },
+  { id: 5, Icon: Lightbulb, name: "Ideas", color: "#f9a875" },
+  { id: 6, Icon: Star, name: "Star", color: "#7dd3a8" },
+  { id: 7, Icon: Brain, name: "AI", color: "#f9a875" },
+  { id: 8, Icon: Coffee, name: "Coffee", color: "#e8d4b8" },
 ];
 
 interface Card {
   id: number;
-  icon: string;
+  Icon: LucideIcon;
   name: string;
   color: string;
   uniqueId: number;
@@ -266,11 +266,10 @@ export function GameSection() {
                       style={{ 
                         backgroundColor: `${card.color}15`,
                         borderColor: card.color,
-                        color: card.color,
                         opacity: card.isMatched ? 0.5 : 1,
                       }}
                     >
-                      <span className="font-mono font-bold">{card.icon}</span>
+                      <card.Icon className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8" style={{ color: card.color }} />
                     </motion.div>
                   ) : (
                     <motion.div
