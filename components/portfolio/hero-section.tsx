@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Github, Linkedin, Twitter, Volume2, VolumeX } from "lucide-react";
+import { Linkedin, Volume2, VolumeX } from "lucide-react";
 import Link from "next/link";
 import { useRef, useState } from "react";
 import { useMouseParallax } from "@/hooks/use-parallax";
@@ -259,8 +259,7 @@ export function HeroSection() {
               className="flex items-center gap-1"
             >
               {[
-                { icon: Github, href: "https://github.com/stefanciocirlan", label: "GitHub" },
-                { icon: Linkedin, href: "https://linkedin.com/in/stefanciocirlan", label: "LinkedIn" },
+                { icon: Linkedin, href: "https://www.linkedin.com/in/stefan-ciocirlan-a99b16205/", label: "LinkedIn" },
               ].map((social, i) => (
                 <Link
                   key={social.label}

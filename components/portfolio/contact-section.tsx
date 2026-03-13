@@ -2,7 +2,7 @@
 
 import { useState, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Send, Mail, MapPin, Clock, Github, Linkedin, Twitter, ArrowUpRight, Sparkles } from "lucide-react";
+import { Send, Mail, MapPin, Clock, Linkedin, ArrowUpRight, Sparkles } from "lucide-react";
 import { useMouseParallax } from "@/hooks/use-parallax";
 
 export function ContactSection() {
@@ -162,8 +162,7 @@ export function ContactSection() {
               </p>
               <div className="flex gap-3">
                 {[
-                  { icon: Github, href: "https://github.com/stefanciocirlan", color: "#e8d4b8" },
-                  { icon: Linkedin, href: "https://linkedin.com/in/stefanciocirlan", color: "#7dd3a8" },
+                  { icon: Linkedin, href: "https://www.linkedin.com/in/stefan-ciocirlan-a99b16205/", color: "#7dd3a8" },
                 ].map((social, i) => (
                   <motion.a
                     key={i}
