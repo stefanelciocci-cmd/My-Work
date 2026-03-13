@@ -19,23 +19,23 @@ const projects = [
     color: "#f9a875",
   },
   {
+    title: "The Population Project",
+    description:
+      "Full-stack role across a website, data scraper, and file management dashboard with AI capabilities.",
+    tags: ["Next.js", "Redis", "OpenAI"],
+    image: "/images/population-project.png",
+    liveUrl: "https://thepopulationproject.org/",
+    githubUrl: null,
+    featured: true,
+    color: "#7dd3a8",
+  },
+  {
     title: "Sensodyne AI Tool",
     description:
       "AI-powered misinformation detection tool monitoring dental health content on TikTok, Instagram & YouTube. Built with Express.js, Redis, and OpenAI integration.",
     tags: ["Express.js", "Redis", "OpenAI", "Social APIs"],
     image: "/images/creative-head.jpg",
     liveUrl: null,
-    githubUrl: null,
-    featured: true,
-    color: "#7dd3a8",
-  },
-  {
-    title: "The Population Project",
-    description:
-      "Full-stack role across a website, data scraper, and file management dashboard with AI capabilities.",
-    tags: ["Next.js", "Redis", "OpenAI"],
-    image: "/images/coding-desk.jpg",
-    liveUrl: "https://thepopulationproject.org/",
     githubUrl: null,
     featured: false,
     color: "#f9a875",
