@@ -46,12 +46,6 @@ export function Footer() {
           </div>
 
           <div className="flex items-center gap-8 text-sm text-muted-foreground">
-            <Link href="#" className="hover:text-primary transition-colors duration-300">
-              Privacy
-            </Link>
-            <Link href="#" className="hover:text-primary transition-colors duration-300">
-              Terms
-            </Link>
             <span className="text-foreground font-mono">&copy; {currentYear}</span>
           </div>
 
