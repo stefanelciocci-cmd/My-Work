@@ -129,7 +129,7 @@ function Planet({
 
   return (
     <motion.div
-      className="absolute z-20"
+      className={`absolute ${isHovered ? 'z-50' : 'z-20'}`}
       style={{
         left: '50%',
         top: '50%',
@@ -173,7 +173,7 @@ function Planet({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.9 }}
             transition={{ duration: 0.2 }}
-            className="absolute top-full left-1/2 -translate-x-1/2 mt-4 z-50 w-64 hidden md:block"
+            className="absolute top-full left-1/2 -translate-x-1/2 mt-4 z-[100] w-64 hidden md:block"
           >
             <div 
               className="bg-card/95 backdrop-blur-xl border-2 rounded-2xl p-4 shadow-2xl"
