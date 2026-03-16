@@ -127,9 +127,12 @@ function Planet({
   const x = Math.cos(angleRad) * radius;
   const y = Math.sin(angleRad) * radius;
 
+  const handleInteractionStart = () => setIsHovered(true);
+  const handleInteractionEnd = () => setIsHovered(false);
+
   return (
     <motion.div
-      className={`absolute ${isHovered ? 'z-50' : 'z-20'}`}
+      className={`absolute ${isHovered ? 'z-[60]' : 'z-20'}`}
       style={{
         left: '50%',
         top: '50%',
@@ -147,56 +150,79 @@ function Planet({
       }}
     >
       <div className="relative -translate-x-1/2 -translate-y-1/2">
-        <motion.div
-          className="p-2 sm:p-3 md:p-4 bg-card/90 backdrop-blur-md border border-border rounded-xl sm:rounded-2xl shadow-xl cursor-pointer relative"
+        <motion.button
+          type="button"
+          className="p-2.5 sm:p-3 md:p-4 bg-card/95 backdrop-blur-md border border-border rounded-xl sm:rounded-2xl shadow-xl cursor-pointer relative"
           animate={{
-            scale: isHovered ? 1.3 : 1,
+            scale: isHovered ? 1.2 : 1,
             borderColor: isHovered ? color : undefined,
-            boxShadow: isHovered ? `0 0 40px ${color}70` : undefined,
+            boxShadow: isHovered ? `0 0 30px ${color}60` : undefined,
           }}
           transition={{ duration: 0.2 }}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
+          onMouseEnter={handleInteractionStart}
+          onMouseLeave={handleInteractionEnd}
+          onTouchStart={handleInteractionStart}
+          onTouchEnd={handleInteractionEnd}
+          onFocus={handleInteractionStart}
+          onBlur={handleInteractionEnd}
         >
           {/* Glow effect behind icon */}
           <div
-            className="absolute inset-0 rounded-xl sm:rounded-2xl opacity-40 blur-lg"
+            className="absolute inset-0 rounded-xl sm:rounded-2xl opacity-30 blur-md"
             style={{ backgroundColor: color }}
           />
-          <Icon className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 relative z-10" style={{ color }} />
-        </motion.div>
+          <Icon className="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6 relative z-10" style={{ color }} />
+        </motion.button>
 
-        {/* Popup under the icon - hidden on mobile */}
+        {/* Label shown on mobile when hovered/tapped */}
+        {isHovered && (
+          <motion.div
+            initial={{ opacity: 0, y: 5, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 5, scale: 0.9 }}
+            transition={{ duration: 0.15 }}
+            className="absolute top-full left-1/2 -translate-x-1/2 mt-2 z-[100] md:hidden"
+          >
+            <div 
+              className="px-3 py-1.5 bg-card/95 backdrop-blur-xl border rounded-lg shadow-lg whitespace-nowrap text-xs font-medium"
+              style={{ borderColor: color, color }}
+            >
+              {label}
+            </div>
+          </motion.div>
+        )}
+
+        {/* Full popup on desktop */}
         {isHovered && (
           <motion.div
             initial={{ opacity: 0, y: -10, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.9 }}
             transition={{ duration: 0.2 }}
-            className="absolute top-full left-1/2 -translate-x-1/2 mt-4 z-[100] w-64 hidden md:block"
+            className="absolute top-full left-1/2 -translate-x-1/2 mt-3 z-[100] w-56 hidden md:block pointer-events-none"
           >
             <div 
-              className="bg-card/95 backdrop-blur-xl border-2 rounded-2xl p-4 shadow-2xl"
+              className="bg-card/95 backdrop-blur-xl border-2 rounded-xl p-3 shadow-2xl"
               style={{ borderColor: color }}
             >
               {/* Arrow pointing up */}
               <div 
-                className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 rotate-45 bg-card border-l-2 border-t-2"
+                className="absolute -top-2 left-1/2 -translate-x-1/2 w-3 h-3 rotate-45 bg-card border-l-2 border-t-2"
                 style={{ borderColor: color }}
               />
-              <div className="flex items-center gap-2 mb-2">
+              <div className="flex items-center gap-2 mb-1.5">
                 <div 
-                  className="w-2.5 h-2.5 rounded-full"
+                  className="w-2 h-2 rounded-full"
                   style={{ backgroundColor: color }}
                 />
                 <h4 
-                  className="font-bold"
+                  className="font-bold text-sm"
                   style={{ color }}
                 >
                   {label}
                 </h4>
               </div>
-              <p className="text-muted-foreground text-sm leading-relaxed">
+              <p className="text-muted-foreground text-xs leading-relaxed">
                 {description}
               </p>
             </div>
