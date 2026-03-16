@@ -26,29 +26,12 @@ function CodingVideo() {
         loop
         muted={isMuted}
         playsInline
-        poster="/images/coding-desk.jpg"
       >
-        <source src="/videos/coding.mp4" type="video/mp4" />
-        <source src="/videos/coding.webm" type="video/webm" />
+        <source src="/coding_video.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
-      
-      <motion.button
-        onClick={toggleMute}
-        className="absolute bottom-4 right-4 p-3 bg-card/80 backdrop-blur-md border border-border rounded-xl hover:bg-card transition-all duration-300 z-10"
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.95 }}
-        aria-label={isMuted ? "Unmute video" : "Mute video"}
-      >
-        {isMuted ? (
-          <VolumeX className="w-5 h-5 text-muted-foreground" />
-        ) : (
-          <Volume2 className="w-5 h-5 text-primary" />
-        )}
-      </motion.button>
 
-      <div className="absolute inset-0 bg-gradient-to-t from-background/40 via-transparent to-transparent pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-r from-background/20 via-transparent to-transparent pointer-events-none" />
+    
     </div>
   );
 }
@@ -280,28 +263,16 @@ export function HeroSection() {
             className="relative order-1 lg:order-2"
           >
             <div className="relative aspect-[4/3] lg:aspect-[4/3] max-w-2xl mx-auto">
-              {/* Glow behind video */}
-              <motion.div 
-                className="absolute -inset-4 bg-gradient-to-br from-primary/30 via-accent/20 to-primary/30 rounded-[2rem] blur-2xl"
-                animate={{ 
-                  opacity: [0.5, 0.8, 0.5],
-                  scale: [1, 1.02, 1],
-                }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              />
-              
-              {/* Video container with glass effect */}
-              <div className="relative w-full h-full rounded-3xl overflow-hidden border-2 border-primary/30 bg-card/30 backdrop-blur-sm shadow-2xl shadow-primary/10">
+              {/* Video container with border-driven depth (no big drop shadow) */}
+              <div className="relative w-full h-full rounded-3xl overflow-hidden border border-border/50 bg-card/10 shadow-[0_0_0_1px_rgba(255,255,255,0.05)_inset,0_0_0_1px_rgba(0,0,0,0.35),0_0_48px_-28px_rgba(0,0,0,0.65)]">
                 <CodingVideo />
               </div>
-
-              {/* Decorative corner elements - smaller on mobile */}
-              <div className="absolute -top-1 -left-1 md:-top-2 md:-left-2 w-6 h-6 md:w-8 md:h-8 border-l-2 border-t-2 border-primary rounded-tl-xl" />
-              <div className="absolute -top-1 -right-1 md:-top-2 md:-right-2 w-6 h-6 md:w-8 md:h-8 border-r-2 border-t-2 border-accent rounded-tr-xl" />
-              <div className="absolute -bottom-1 -left-1 md:-bottom-2 md:-left-2 w-6 h-6 md:w-8 md:h-8 border-l-2 border-b-2 border-accent rounded-bl-xl" />
-              <div className="absolute -bottom-1 -right-1 md:-bottom-2 md:-right-2 w-6 h-6 md:w-8 md:h-8 border-r-2 border-b-2 border-primary rounded-br-xl" />
-
-              {/* Floating labels - hidden on mobile */}
+              {/* Corner accents */}
+              <div className="absolute -top-2 -left-2 w-8 h-8 border-l-2 border-t-2 border-primary/50 rounded-tl-xl" />
+              <div className="absolute -top-2 -right-2 w-8 h-8 border-r-2 border-t-2 border-accent/50 rounded-tr-xl" />
+              <div className="absolute -bottom-2 -left-2 w-8 h-8 border-l-2 border-b-2 border-accent/50 rounded-bl-xl" />
+              <div className="absolute -bottom-2 -right-2 w-8 h-8 border-r-2 border-b-2 border-primary/50 rounded-br-xl" />
+              {/* Floating labels */}
               <motion.div
                 className="absolute -top-6 right-8 px-4 py-2 bg-card/90 backdrop-blur-md border border-primary/30 rounded-xl shadow-lg hidden md:block"
                 animate={{ y: [0, -6, 0] }}
@@ -311,7 +282,6 @@ export function HeroSection() {
                   {"// lofi beats to code to"}
                 </code>
               </motion.div>
-              
               <motion.div
                 className="absolute -bottom-6 left-8 px-4 py-2 bg-card/90 backdrop-blur-md border border-accent/30 rounded-xl shadow-lg hidden md:block"
                 animate={{ y: [0, 6, 0] }}
