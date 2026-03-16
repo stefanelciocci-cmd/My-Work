@@ -132,7 +132,7 @@ function Planet({
 
   return (
     <motion.div
-      className={`absolute pointer-events-auto ${isHovered ? 'z-[60]' : 'z-20'}`}
+      className={`absolute pointer-events-auto ${isHovered ? 'z-[9999]' : 'z-[100]'}`}
       style={{
         left: '50%',
         top: '50%',
@@ -181,7 +181,7 @@ function Planet({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 5, scale: 0.9 }}
             transition={{ duration: 0.15 }}
-            className="absolute top-full left-1/2 -translate-x-1/2 mt-2 z-[100] md:hidden"
+            className="absolute top-full left-1/2 -translate-x-1/2 mt-2 z-[10000] md:hidden"
           >
             <div 
               className="px-3 py-1.5 bg-card/95 backdrop-blur-xl border rounded-lg shadow-lg whitespace-nowrap text-xs font-medium"
@@ -199,7 +199,7 @@ function Planet({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.9 }}
             transition={{ duration: 0.2 }}
-            className="absolute top-full left-1/2 -translate-x-1/2 mt-3 z-[100] w-56 hidden md:block pointer-events-none"
+            className="absolute top-full left-1/2 -translate-x-1/2 mt-3 z-[10000] w-56 hidden md:block pointer-events-none"
           >
             <div 
               className="bg-card/95 backdrop-blur-xl border-2 rounded-xl p-3 shadow-2xl"
