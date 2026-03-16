@@ -131,71 +131,58 @@ function Planet({
   const handleInteractionEnd = () => setIsHovered(false);
 
   return (
-    <>
-      <motion.div
-        className="absolute pointer-events-auto z-[50]"
-        style={{
-          left: '50%',
-          top: '50%',
-          x,
-          y,
-        }}
-        initial={{ opacity: 0, scale: 0 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true }}
-        transition={{
-          delay: index * 0.2 + planetIndex * 0.1 + 0.4,
-          duration: 0.5,
-          type: "spring",
-          stiffness: 200,
-        }}
-      >
-        <div className="relative -translate-x-1/2 -translate-y-1/2">
-          <motion.button
-            type="button"
-            className="p-2.5 sm:p-3 md:p-4 bg-card/95 backdrop-blur-md border border-border rounded-xl sm:rounded-2xl shadow-xl cursor-pointer relative"
-            animate={{
-              scale: isHovered ? 1.2 : 1,
-              borderColor: isHovered ? color : undefined,
-              boxShadow: isHovered ? `0 0 30px ${color}60` : undefined,
-            }}
-            transition={{ duration: 0.2 }}
-            onMouseEnter={handleInteractionStart}
-            onMouseLeave={handleInteractionEnd}
-            onTouchStart={handleInteractionStart}
-            onTouchEnd={handleInteractionEnd}
-            onFocus={handleInteractionStart}
-            onBlur={handleInteractionEnd}
-          >
-            {/* Glow effect behind icon */}
-            <div
-              className="absolute inset-0 rounded-xl sm:rounded-2xl opacity-30 blur-md"
-              style={{ backgroundColor: color }}
-            />
-            <Icon className="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6 relative z-10" style={{ color }} />
-          </motion.button>
-        </div>
-      </motion.div>
-
-      {/* Popup rendered outside the planet container for proper z-index */}
-      {isHovered && (
-        <div 
-          className="fixed inset-0 pointer-events-none"
-          style={{ zIndex: 99999 }}
+    <motion.div
+      className="absolute pointer-events-auto"
+      style={{
+        left: '50%',
+        top: '50%',
+        x,
+        y,
+        zIndex: isHovered ? 9999 : 50,
+      }}
+      initial={{ opacity: 0, scale: 0 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: true }}
+      transition={{
+        delay: index * 0.2 + planetIndex * 0.1 + 0.4,
+        duration: 0.5,
+        type: "spring",
+        stiffness: 200,
+      }}
+    >
+      <div className="relative -translate-x-1/2 -translate-y-1/2">
+        <motion.button
+          type="button"
+          className="p-2.5 sm:p-3 md:p-4 bg-card/95 backdrop-blur-md border border-border rounded-xl sm:rounded-2xl shadow-xl cursor-pointer relative"
+          animate={{
+            scale: isHovered ? 1.2 : 1,
+            borderColor: isHovered ? color : undefined,
+            boxShadow: isHovered ? `0 0 30px ${color}60` : undefined,
+          }}
+          transition={{ duration: 0.2 }}
+          onMouseEnter={handleInteractionStart}
+          onMouseLeave={handleInteractionEnd}
+          onTouchStart={handleInteractionStart}
+          onTouchEnd={handleInteractionEnd}
+          onFocus={handleInteractionStart}
+          onBlur={handleInteractionEnd}
         >
-          {/* Mobile label */}
+          {/* Glow effect behind icon */}
+          <div
+            className="absolute inset-0 rounded-xl sm:rounded-2xl opacity-30 blur-md"
+            style={{ backgroundColor: color }}
+          />
+          <Icon className="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6 relative z-10" style={{ color }} />
+        </motion.button>
+
+        {/* Mobile label */}
+        {isHovered && (
           <motion.div
             initial={{ opacity: 0, y: 5, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 5, scale: 0.9 }}
             transition={{ duration: 0.15 }}
-            className="md:hidden"
-            style={{
-              position: 'absolute',
-              left: `calc(50% + ${x}px)`,
-              top: `calc(50% + ${y}px + 30px)`,
-              transform: 'translateX(-50%)',
-            }}
+            className="absolute top-full left-1/2 -translate-x-1/2 mt-2 md:hidden"
           >
             <div 
               className="px-3 py-1.5 bg-card backdrop-blur-xl border rounded-lg shadow-lg whitespace-nowrap text-xs font-medium"
@@ -204,20 +191,16 @@ function Planet({
               {label}
             </div>
           </motion.div>
+        )}
 
-          {/* Desktop full popup */}
+        {/* Desktop full popup */}
+        {isHovered && (
           <motion.div
             initial={{ opacity: 0, y: -10, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.9 }}
             transition={{ duration: 0.2 }}
-            className="hidden md:block w-56"
-            style={{
-              position: 'absolute',
-              left: `calc(50% + ${x}px)`,
-              top: `calc(50% + ${y}px + 35px)`,
-              transform: 'translateX(-50%)',
-            }}
+            className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-56 hidden md:block"
           >
             <div 
               className="bg-card backdrop-blur-xl border-2 rounded-xl p-3 shadow-2xl"
@@ -245,9 +228,9 @@ function Planet({
               </p>
             </div>
           </motion.div>
-        </div>
-      )}
-    </>
+        )}
+      </div>
+    </motion.div>
   );
 }
 
