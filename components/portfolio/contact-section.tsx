@@ -34,7 +34,7 @@ export function ContactSection() {
   };
 
   return (
-    <section ref={containerRef} className="py-32 relative overflow-hidden" id="contact">
+    <section ref={containerRef} className="md:py-32 py-16 relative overflow-hidden" id="contact">
       {/* Background */}
       <div className="absolute inset-0 pointer-events-none">
         <motion.div

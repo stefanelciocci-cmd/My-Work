@@ -56,7 +56,7 @@ export function SkillsSection() {
   const y2 = useTransform(scrollYProgress, [0, 1], [80, -80]);
 
   return (
-    <section ref={containerRef} className="py-32 relative overflow-hidden" id="skills">
+    <section ref={containerRef} className="md:py-32 py-16 relative overflow-hidden" id="skills">
       {/* Background elements */}
       <div className="absolute inset-0 pointer-events-none">
         <motion.div

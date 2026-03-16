@@ -152,7 +152,7 @@ export function GameSection() {
   };
 
   return (
-    <section ref={containerRef} className="py-32 relative overflow-hidden" id="game">
+    <section ref={containerRef} className="md:py-32 py-16 relative overflow-hidden" id="game">
       {/* Background elements */}
       <div className="absolute inset-0 pointer-events-none">
         <motion.div

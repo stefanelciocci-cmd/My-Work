@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform, useAnimationControls } from "framer-mo
 import Image from "next/image";
 import { useRef, useState, useEffect } from "react";
 import { useMouseParallax } from "@/hooks/use-parallax";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   Code2,
   Database,
@@ -85,6 +86,7 @@ function Planet({
   const animationRef = useRef<number | null>(null);
   const startTimeRef = useRef<number | null>(null);
   const pausedAngleRef = useRef(angle);
+  const closeTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (isHovered) {
@@ -127,8 +129,24 @@ function Planet({
   const x = Math.cos(angleRad) * radius;
   const y = Math.sin(angleRad) * radius;
 
-  const handleInteractionStart = () => setIsHovered(true);
-  const handleInteractionEnd = () => setIsHovered(false);
+  const clearCloseTimeout = () => {
+    if (closeTimeoutRef.current) {
+      window.clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
+  };
+
+  const handleInteractionStart = () => {
+    clearCloseTimeout();
+    setIsHovered(true);
+  };
+
+  const handleInteractionEnd = () => {
+    clearCloseTimeout();
+    closeTimeoutRef.current = window.setTimeout(() => {
+      setIsHovered(false);
+    }, 120);
+  };
 
   return (
     <motion.div
@@ -151,84 +169,95 @@ function Planet({
       }}
     >
       <div className="relative -translate-x-1/2 -translate-y-1/2">
-        <motion.button
-          type="button"
-          className="p-2.5 sm:p-3 md:p-4 bg-card/95 backdrop-blur-md border border-border rounded-xl sm:rounded-2xl shadow-xl cursor-pointer relative"
-          animate={{
-            scale: isHovered ? 1.2 : 1,
-            borderColor: isHovered ? color : undefined,
-            boxShadow: isHovered ? `0 0 30px ${color}60` : undefined,
-          }}
-          transition={{ duration: 0.2 }}
-          onMouseEnter={handleInteractionStart}
-          onMouseLeave={handleInteractionEnd}
-          onTouchStart={handleInteractionStart}
-          onTouchEnd={handleInteractionEnd}
-          onFocus={handleInteractionStart}
-          onBlur={handleInteractionEnd}
-        >
-          {/* Glow effect behind icon */}
-          <div
-            className="absolute inset-0 rounded-xl sm:rounded-2xl opacity-30 blur-md"
-            style={{ backgroundColor: color }}
-          />
-          <Icon className="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6 relative z-10" style={{ color }} />
-        </motion.button>
-
-        {/* Mobile label */}
-        {isHovered && (
-          <motion.div
-            initial={{ opacity: 0, y: 5, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 5, scale: 0.9 }}
-            transition={{ duration: 0.15 }}
-            className="absolute top-full left-1/2 -translate-x-1/2 mt-2 md:hidden"
-          >
-            <div 
-              className="px-3 py-1.5 bg-card backdrop-blur-xl border rounded-lg shadow-lg whitespace-nowrap text-xs font-medium"
-              style={{ borderColor: color, color }}
+        <Popover open={isHovered}>
+          <PopoverTrigger asChild>
+            <motion.button
+              type="button"
+              className="p-2.5 sm:p-3 md:p-4 bg-card/95 backdrop-blur-md border border-border rounded-xl sm:rounded-2xl shadow-xl cursor-pointer relative"
+              animate={{
+                scale: isHovered ? 1.2 : 1,
+                borderColor: isHovered ? color : undefined,
+                boxShadow: isHovered ? `0 0 30px ${color}60` : undefined,
+              }}
+              transition={{ duration: 0.2 }}
+              onMouseEnter={handleInteractionStart}
+              onMouseLeave={handleInteractionEnd}
+              onTouchStart={handleInteractionStart}
+              onTouchEnd={handleInteractionEnd}
+              onFocus={handleInteractionStart}
+              onBlur={handleInteractionEnd}
             >
-              {label}
-            </div>
-          </motion.div>
-        )}
+              {/* Glow effect behind icon */}
+              <div
+                className="absolute inset-0 rounded-xl sm:rounded-2xl opacity-30 blur-md"
+                style={{ backgroundColor: color }}
+              />
+              <Icon className="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6 relative z-10" style={{ color }} />
+            </motion.button>
+          </PopoverTrigger>
 
-        {/* Desktop full popup */}
-        {isHovered && (
-          <motion.div
-            initial={{ opacity: 0, y: -10, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -10, scale: 0.9 }}
-            transition={{ duration: 0.2 }}
-            className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-56 hidden md:block"
+          {/* Desktop full popup (ported to body so it overlays everything) */}
+          <PopoverContent
+            side="top"
+            align="center"
+            sideOffset={14}
+            className="group hidden md:block w-56 p-0 bg-transparent border-0 shadow-none outline-hidden"
+            onMouseEnter={handleInteractionStart}
+            onMouseLeave={handleInteractionEnd}
           >
-            <div 
-              className="bg-card backdrop-blur-xl border-2 rounded-xl p-3 shadow-2xl"
+            <div
+              className="relative bg-card backdrop-blur-xl border-2 rounded-xl p-3 shadow-2xl"
               style={{ borderColor: color }}
             >
-              {/* Arrow pointing up */}
-              <div 
-                className="absolute -top-2 left-1/2 -translate-x-1/2 w-3 h-3 rotate-45 bg-card border-l-2 border-t-2"
+              {/* Diamond arrow that flips based on actual side */}
+              <div
+                className="absolute left-1/2 -translate-x-1/2 w-3 h-3 rotate-45 bg-card
+                group-data-[side=top]:-bottom-2 group-data-[side=top]:border-r-2 group-data-[side=top]:border-b-2
+                group-data-[side=bottom]:-top-2 group-data-[side=bottom]:border-l-2 group-data-[side=bottom]:border-t-2"
                 style={{ borderColor: color }}
               />
               <div className="flex items-center gap-2 mb-1.5">
-                <div 
-                  className="w-2 h-2 rounded-full"
-                  style={{ backgroundColor: color }}
-                />
-                <h4 
-                  className="font-bold text-sm"
-                  style={{ color }}
-                >
+                <div className="w-2 h-2 rounded-full" style={{ backgroundColor: color }} />
+                <h4 className="font-bold text-sm" style={{ color }}>
                   {label}
                 </h4>
               </div>
-              <p className="text-muted-foreground text-xs leading-relaxed">
+              <p className="text-muted-foreground text-xs leading-relaxed">{description}</p>
+            </div>
+          </PopoverContent>
+
+          {/* Mobile popup (ported to body so it overlays everything) */}
+          <PopoverContent
+            side="top"
+            align="center"
+            sideOffset={10}
+            className="group md:hidden w-56 p-0 bg-transparent border-0 shadow-none outline-hidden"
+            onMouseEnter={handleInteractionStart}
+            onMouseLeave={handleInteractionEnd}
+          >
+            <div
+              className="relative bg-card backdrop-blur-xl border rounded-xl px-3 py-2 shadow-2xl"
+              style={{ borderColor: color }}
+            >
+              {/* Diamond arrow that flips based on actual side */}
+              <div
+                className="absolute left-1/2 -translate-x-1/2 w-3 h-3 rotate-45 bg-card
+                group-data-[side=top]:-bottom-2 group-data-[side=top]:border-r group-data-[side=top]:border-b
+                group-data-[side=bottom]:-top-2 group-data-[side=bottom]:border-l group-data-[side=bottom]:border-t"
+                style={{ borderColor: color }}
+              />
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full" style={{ backgroundColor: color }} />
+                <span className="text-xs font-semibold" style={{ color }}>
+                  {label}
+                </span>
+              </div>
+              <p className="mt-1 text-[11px] leading-snug text-muted-foreground">
                 {description}
               </p>
             </div>
-          </motion.div>
-        )}
+          </PopoverContent>
+        </Popover>
       </div>
     </motion.div>
   );
@@ -316,7 +345,7 @@ export function MindSection() {
   }));
 
   return (
-    <section ref={containerRef} id="mind" className="relative py-32 overflow-hidden">
+    <section ref={containerRef} id="mind" className="relative md:py-32 py-16 overflow-hidden">
       {/* Animated background */}
       <div className="absolute inset-0 pointer-events-none">
         <motion.div

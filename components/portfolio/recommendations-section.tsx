@@ -37,7 +37,7 @@ export function RecommendationsSection() {
   const y = useTransform(scrollYProgress, [0, 1], [50, -50]);
 
   return (
-    <section ref={containerRef} id="recommendations" className="relative py-32 overflow-hidden">
+    <section ref={containerRef} id="recommendations" className="relative md:py-32 py-16 overflow-hidden">
       {/* Animated background */}
       <div className="absolute inset-0 pointer-events-none">
         <motion.div

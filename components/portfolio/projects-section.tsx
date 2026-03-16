@@ -87,7 +87,7 @@ export function ProjectsSection() {
   const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
 
   return (
-    <section ref={containerRef} className="py-32 relative overflow-hidden" id="projects">
+    <section ref={containerRef} className="md:py-32 py-16 relative overflow-hidden" id="projects">
       {/* Background */}
       <div className="absolute inset-0 pointer-events-none">
         <motion.div
@@ -234,15 +234,7 @@ export function ProjectsSection() {
                     </div>
                   </div>
 
-                  {/* Hover arrow */}
-                  <motion.div 
-                    className="absolute top-6 right-6 w-12 h-12 rounded-2xl flex items-center justify-center opacity-0 group-hover:opacity-100"
-                    style={{ backgroundColor: `${project.color}20` }}
-                    whileHover={{ scale: 1.1 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <ArrowUpRight className="w-5 h-5" style={{ color: project.color }} />
-                  </motion.div>
+                 
                 </motion.div>
               </motion.div>
             ))}

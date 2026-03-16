@@ -160,7 +160,7 @@ export function HeroSection() {
             initial={{ opacity: 0, x: -80 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="space-y-8 order-2 lg:order-1"
+            className="space-y-8 order-1 lg:order-1"
           >
             <div className="space-y-6">
               <motion.div
@@ -260,7 +260,7 @@ export function HeroSection() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.2, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="relative order-1 lg:order-2"
+            className="relative order-2 lg:order-2 hidden md:block"
           >
             <div className="relative aspect-[4/3] lg:aspect-[4/3] max-w-2xl mx-auto">
               {/* Video container with border-driven depth (no big drop shadow) */}
@@ -302,7 +302,7 @@ export function HeroSection() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 2 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:block"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2"
       >
         <motion.div
           animate={{ y: [0, 12, 0] }}
