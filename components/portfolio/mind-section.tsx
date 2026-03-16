@@ -132,7 +132,7 @@ function Planet({
 
   return (
     <motion.div
-      className={`absolute ${isHovered ? 'z-[60]' : 'z-20'}`}
+      className={`absolute pointer-events-auto ${isHovered ? 'z-[60]' : 'z-20'}`}
       style={{
         left: '50%',
         top: '50%',
@@ -248,7 +248,7 @@ function OrbitRing({
 }) {
   return (
     <div
-      className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+      className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
       style={{
         width: radius * 2,
         height: radius * 2,
@@ -256,7 +256,7 @@ function OrbitRing({
     >
       {/* Orbit path (ring) - dashed circle */}
       <motion.div
-        className="absolute inset-0 rounded-full pointer-events-none"
+        className="absolute inset-0 rounded-full"
         style={{
           border: `2px dashed ${index === 0 ? 'rgba(249, 168, 117, 0.4)' : index === 1 ? 'rgba(125, 211, 168, 0.35)' : 'rgba(249, 168, 117, 0.25)'}`,
         }}
