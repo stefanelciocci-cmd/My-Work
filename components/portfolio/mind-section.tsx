@@ -1,10 +1,10 @@
 "use client";
 
-import { motion, useScroll, useTransform, useAnimationControls } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import { useRef, useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { useMouseParallax } from "@/hooks/use-parallax";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   Code2,
   Database,
@@ -20,11 +20,9 @@ import {
   Brain,
 } from "lucide-react";
 
-// Define orbital rings with their planets (icons) - now with descriptions
-// Radii will be scaled based on container size
 const orbitsConfig = [
   {
-    radiusPercent: 0.22, // percentage of container
+    radiusPercent: 0.22,
     duration: 25,
     direction: 1,
     planets: [
@@ -58,6 +56,74 @@ const orbitsConfig = [
   },
 ];
 
+// Tooltip rendered into document.body via portal so it overlays everything,
+// but positioned via the button's bounding rect so it stays anchored.
+function TooltipPortal({
+  label,
+  color,
+  description,
+  isHovered,
+  anchorRef,
+}: {
+  label: string;
+  color: string;
+  description: string;
+  isHovered: boolean;
+  anchorRef: React.RefObject<HTMLDivElement | null>;
+}) {
+  const [pos, setPos] = useState({ top: 0, left: 0 });
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isHovered || !anchorRef.current) return;
+    const rect = anchorRef.current.getBoundingClientRect();
+    setPos({
+      top: rect.top + window.scrollY - 8, // 8px gap above button
+      left: rect.left + window.scrollX + rect.width / 2,
+    });
+  }, [isHovered, anchorRef]);
+
+  if (!mounted) return null;
+
+  return createPortal(
+    <div
+      className="absolute pointer-events-none"
+      style={{
+        top: pos.top,
+        left: pos.left,
+        transform: `translateX(-50%) translateY(${isHovered ? "-100%" : "calc(-100% + 6px)"})`,
+        opacity: isHovered ? 1 : 0,
+        transition: "opacity 0.15s ease, transform 0.15s ease",
+        zIndex: 99999,
+        width: "13rem",
+      }}
+    >
+      <div
+        className="relative bg-card backdrop-blur-xl border-2 rounded-xl p-3 shadow-2xl"
+        style={{ borderColor: color }}
+      >
+        {/* Arrow */}
+        <div
+          className="absolute left-1/2 -translate-x-1/2 -bottom-[7px] w-3 h-3 rotate-45 bg-card border-r-2 border-b-2"
+          style={{ borderColor: color }}
+        />
+        <div className="flex items-center gap-2 mb-1.5">
+          <div className="w-2 h-2 rounded-full" style={{ backgroundColor: color }} />
+          <h4 className="font-bold text-sm" style={{ color }}>
+            {label}
+          </h4>
+        </div>
+        <p className="text-muted-foreground text-xs leading-relaxed">{description}</p>
+      </div>
+    </div>,
+    document.body
+  );
+}
+
 function Planet({
   Icon,
   label,
@@ -86,11 +152,11 @@ function Planet({
   const animationRef = useRef<number | null>(null);
   const startTimeRef = useRef<number | null>(null);
   const pausedAngleRef = useRef(angle);
-  const closeTimeoutRef = useRef<number | null>(null);
+  // Ref on the wrapper — used to measure position for the portal tooltip
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (isHovered) {
-      // Stop animation and store current angle
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
         animationRef.current = null;
@@ -99,65 +165,31 @@ function Planet({
       return;
     }
 
-    // Resume or start animation
     startTimeRef.current = null;
-    
+
     const animate = (timestamp: number) => {
-      if (!startTimeRef.current) {
-        startTimeRef.current = timestamp;
-      }
-      
+      if (!startTimeRef.current) startTimeRef.current = timestamp;
       const elapsed = timestamp - startTimeRef.current;
       const progress = (elapsed / (duration * 1000)) % 1;
-      const newAngle = pausedAngleRef.current + (progress * 360 * direction);
-      
+      const newAngle = pausedAngleRef.current + progress * 360 * direction;
       setCurrentAngle(newAngle % 360);
       animationRef.current = requestAnimationFrame(animate);
     };
 
     animationRef.current = requestAnimationFrame(animate);
-
     return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-      }
+      if (animationRef.current) cancelAnimationFrame(animationRef.current);
     };
   }, [isHovered, duration, direction]);
 
-  // Calculate position based on current angle
   const angleRad = (currentAngle * Math.PI) / 180;
   const x = Math.cos(angleRad) * radius;
   const y = Math.sin(angleRad) * radius;
 
-  const clearCloseTimeout = () => {
-    if (closeTimeoutRef.current) {
-      window.clearTimeout(closeTimeoutRef.current);
-      closeTimeoutRef.current = null;
-    }
-  };
-
-  const handleInteractionStart = () => {
-    clearCloseTimeout();
-    setIsHovered(true);
-  };
-
-  const handleInteractionEnd = () => {
-    clearCloseTimeout();
-    closeTimeoutRef.current = window.setTimeout(() => {
-      setIsHovered(false);
-    }, 120);
-  };
-
   return (
     <motion.div
       className="absolute pointer-events-auto"
-      style={{
-        left: '50%',
-        top: '50%',
-        x,
-        y,
-        zIndex: isHovered ? 9999 : 50,
-      }}
+      style={{ left: "50%", top: "50%", x, y, zIndex: isHovered ? 9999 : 50 }}
       initial={{ opacity: 0, scale: 0 }}
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true }}
@@ -168,96 +200,42 @@ function Planet({
         stiffness: 200,
       }}
     >
-      <div className="relative -translate-x-1/2 -translate-y-1/2">
-        <Popover open={isHovered}>
-          <PopoverTrigger asChild>
-            <motion.button
-              type="button"
-              className="p-2.5 sm:p-3 md:p-4 bg-card/95 backdrop-blur-md border border-border rounded-xl sm:rounded-2xl shadow-xl cursor-pointer relative"
-              animate={{
-                scale: isHovered ? 1.2 : 1,
-                borderColor: isHovered ? color : undefined,
-                boxShadow: isHovered ? `0 0 30px ${color}60` : undefined,
-              }}
-              transition={{ duration: 0.2 }}
-              onMouseEnter={handleInteractionStart}
-              onMouseLeave={handleInteractionEnd}
-              onTouchStart={handleInteractionStart}
-              onTouchEnd={handleInteractionEnd}
-              onFocus={handleInteractionStart}
-              onBlur={handleInteractionEnd}
-            >
-              {/* Glow effect behind icon */}
-              <div
-                className="absolute inset-0 rounded-xl sm:rounded-2xl opacity-30 blur-md"
-                style={{ backgroundColor: color }}
-              />
-              <Icon className="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6 relative z-10" style={{ color }} />
-            </motion.button>
-          </PopoverTrigger>
+      {/*
+        Single wrapper owns mouse events. The tooltip is rendered via a portal
+        into document.body so it overlays all content, but hover state is still
+        managed here — no gap, no flicker.
+      */}
+      <div
+        ref={wrapperRef}
+        className="relative -translate-x-1/2 -translate-y-1/2"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <TooltipPortal
+          label={label}
+          color={color}
+          description={description}
+          isHovered={isHovered}
+          anchorRef={wrapperRef}
+        />
 
-          {/* Desktop full popup (ported to body so it overlays everything) */}
-          <PopoverContent
-            side="top"
-            align="center"
-            sideOffset={14}
-            className="group hidden md:block w-56 p-0 bg-transparent border-0 shadow-none outline-hidden"
-            onMouseEnter={handleInteractionStart}
-            onMouseLeave={handleInteractionEnd}
-          >
-            <div
-              className="relative bg-card backdrop-blur-xl border-2 rounded-xl p-3 shadow-2xl"
-              style={{ borderColor: color }}
-            >
-              {/* Diamond arrow that flips based on actual side */}
-              <div
-                className="absolute left-1/2 -translate-x-1/2 w-3 h-3 rotate-45 bg-card
-                group-data-[side=top]:-bottom-2 group-data-[side=top]:border-r-2 group-data-[side=top]:border-b-2
-                group-data-[side=bottom]:-top-2 group-data-[side=bottom]:border-l-2 group-data-[side=bottom]:border-t-2"
-                style={{ borderColor: color }}
-              />
-              <div className="flex items-center gap-2 mb-1.5">
-                <div className="w-2 h-2 rounded-full" style={{ backgroundColor: color }} />
-                <h4 className="font-bold text-sm" style={{ color }}>
-                  {label}
-                </h4>
-              </div>
-              <p className="text-muted-foreground text-xs leading-relaxed">{description}</p>
-            </div>
-          </PopoverContent>
-
-          {/* Mobile popup (ported to body so it overlays everything) */}
-          <PopoverContent
-            side="top"
-            align="center"
-            sideOffset={10}
-            className="group md:hidden w-56 p-0 bg-transparent border-0 shadow-none outline-hidden"
-            onMouseEnter={handleInteractionStart}
-            onMouseLeave={handleInteractionEnd}
-          >
-            <div
-              className="relative bg-card backdrop-blur-xl border rounded-xl px-3 py-2 shadow-2xl"
-              style={{ borderColor: color }}
-            >
-              {/* Diamond arrow that flips based on actual side */}
-              <div
-                className="absolute left-1/2 -translate-x-1/2 w-3 h-3 rotate-45 bg-card
-                group-data-[side=top]:-bottom-2 group-data-[side=top]:border-r group-data-[side=top]:border-b
-                group-data-[side=bottom]:-top-2 group-data-[side=bottom]:border-l group-data-[side=bottom]:border-t"
-                style={{ borderColor: color }}
-              />
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full" style={{ backgroundColor: color }} />
-                <span className="text-xs font-semibold" style={{ color }}>
-                  {label}
-                </span>
-              </div>
-              <p className="mt-1 text-[11px] leading-snug text-muted-foreground">
-                {description}
-              </p>
-            </div>
-          </PopoverContent>
-        </Popover>
+        <motion.button
+          type="button"
+          className="p-2.5 sm:p-3 md:p-4 bg-card/95 backdrop-blur-md border border-border rounded-xl sm:rounded-2xl shadow-xl cursor-pointer relative"
+          animate={{
+            scale: isHovered ? 1.2 : 1,
+            borderColor: isHovered ? color : undefined,
+            boxShadow: isHovered ? `0 0 30px ${color}60` : undefined,
+          }}
+          transition={{ duration: 0.2 }}
+          onTouchStart={() => setIsHovered((v) => !v)}
+        >
+          <div
+            className="absolute inset-0 rounded-xl sm:rounded-2xl opacity-30 blur-md"
+            style={{ backgroundColor: color }}
+          />
+          <Icon className="w-5 h-5 sm:w-5 sm:h-5 md:w-6 md:h-6 relative z-10" style={{ color }} />
+        </motion.button>
       </div>
     </motion.div>
   );
@@ -279,24 +257,24 @@ function OrbitRing({
   return (
     <div
       className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
-      style={{
-        width: radius * 2,
-        height: radius * 2,
-      }}
+      style={{ width: radius * 2, height: radius * 2 }}
     >
-      {/* Orbit path (ring) - dashed circle */}
       <motion.div
         className="absolute inset-0 rounded-full"
         style={{
-          border: `2px dashed ${index === 0 ? 'rgba(249, 168, 117, 0.4)' : index === 1 ? 'rgba(125, 211, 168, 0.35)' : 'rgba(249, 168, 117, 0.25)'}`,
+          border: `2px dashed ${
+            index === 0
+              ? "rgba(249, 168, 117, 0.4)"
+              : index === 1
+              ? "rgba(125, 211, 168, 0.35)"
+              : "rgba(249, 168, 117, 0.25)"
+          }`,
         }}
         initial={{ opacity: 0, scale: 0.5 }}
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true }}
         transition={{ delay: index * 0.15 + 0.2, duration: 0.6, ease: "easeOut" }}
       />
-
-      {/* Planets - each manages its own animation */}
       {planets.map((planet, planetIndex) => (
         <Planet
           key={planetIndex}
@@ -326,27 +304,22 @@ export function MindSection() {
   const y = useTransform(scrollYProgress, [0, 1], [60, -60]);
   const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.95, 1, 0.95]);
 
-  // Track container size for responsive orbits
   useEffect(() => {
     const updateSize = () => {
-      if (orbitalRef.current) {
-        setContainerSize(orbitalRef.current.offsetWidth);
-      }
+      if (orbitalRef.current) setContainerSize(orbitalRef.current.offsetWidth);
     };
     updateSize();
-    window.addEventListener('resize', updateSize);
-    return () => window.removeEventListener('resize', updateSize);
+    window.addEventListener("resize", updateSize);
+    return () => window.removeEventListener("resize", updateSize);
   }, []);
 
-  // Calculate responsive orbits
-  const orbits = orbitsConfig.map(orbit => ({
+  const orbits = orbitsConfig.map((orbit) => ({
     ...orbit,
     radius: containerSize * orbit.radiusPercent,
   }));
 
   return (
     <section ref={containerRef} id="mind" className="relative md:py-32 py-16 overflow-hidden">
-      {/* Animated background */}
       <div className="absolute inset-0 pointer-events-none">
         <motion.div
           className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full"
@@ -396,32 +369,30 @@ export function MindSection() {
             </span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
-            A glimpse into the creative chaos that fuels my passion for building
-            beautiful, functional experiences.
+            A glimpse into the creative chaos that fuels my passion for building beautiful, functional experiences.
           </p>
         </motion.div>
 
-        {/* Orbital system container */}
         <div className="relative flex justify-center items-center min-h-[400px] md:min-h-[600px] lg:min-h-[700px]">
-          <div ref={orbitalRef} className="relative w-[320px] h-[320px] sm:w-[450px] sm:h-[450px] md:w-[550px] md:h-[550px] lg:w-[650px] lg:h-[650px]">
-            {/* Orbit rings with planets */}
+          <div
+            ref={orbitalRef}
+            className="relative w-[320px] h-[320px] sm:w-[450px] sm:h-[450px] md:w-[550px] md:h-[550px] lg:w-[650px] lg:h-[650px]"
+          >
             {orbits.map((orbit, index) => (
-              <OrbitRing 
-                key={index} 
+              <OrbitRing
+                key={index}
                 radius={orbit.radius}
                 duration={orbit.duration}
                 direction={orbit.direction}
                 planets={orbit.planets}
-                index={index} 
+                index={index}
               />
             ))}
 
-            {/* Central head (the sun) */}
             <motion.div
               style={{ y, scale }}
               className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 sm:w-32 sm:h-32 md:w-44 md:h-44 lg:w-52 lg:h-52 z-30"
             >
-              {/* Pulsing glow rings */}
               <motion.div
                 className="absolute inset-0 bg-primary/30 rounded-full blur-3xl"
                 animate={{ scale: [1, 1.4, 1], opacity: [0.3, 0.5, 0.3] }}
@@ -432,8 +403,6 @@ export function MindSection() {
                 animate={{ scale: [1.2, 0.9, 1.2], opacity: [0.2, 0.4, 0.2] }}
                 transition={{ duration: 4, repeat: Infinity, delay: 0.5 }}
               />
-
-              {/* Main image container */}
               <motion.div
                 className="relative w-full h-full rounded-full overflow-hidden border-2 border-primary/50 shadow-2xl"
                 style={{
@@ -453,7 +422,6 @@ export function MindSection() {
             </motion.div>
           </div>
 
-          {/* Decorative particles around the orbital system - slower animation */}
           {[...Array(15)].map((_, i) => (
             <motion.div
               key={i}
@@ -462,10 +430,7 @@ export function MindSection() {
                 left: `${15 + Math.random() * 70}%`,
                 top: `${15 + Math.random() * 70}%`,
               }}
-              animate={{
-                opacity: [0.2, 0.7, 0.2],
-                scale: [1, 1.5, 1],
-              }}
+              animate={{ opacity: [0.2, 0.7, 0.2], scale: [1, 1.5, 1] }}
               transition={{
                 duration: 6 + Math.random() * 4,
                 repeat: Infinity,
