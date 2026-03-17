@@ -45,11 +45,6 @@ export function ContactSection() {
         throw new Error(data.error || "Failed to send message");
       }
 
-      // Open mailto link as fallback to send email via user's email client
-      if (data.mailto) {
-        window.location.href = data.mailto;
-      }
-
       setSubmitted(true);
       setFormData({ name: "", email: "", message: "" });
     } catch (err) {
