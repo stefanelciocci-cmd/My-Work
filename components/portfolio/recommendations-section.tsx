@@ -16,6 +16,14 @@ const recommendations = [
     initials: "VC",
   },
   {
+    name: "Danilo Colombo",
+    role: "Software Architect, Automation Architect, Java and RPA Senior Teacher",
+    relationship: "Managed Stefan directly at Gamma Innovation",
+    quote: "Stefan is a serious and efficient programmer. In one of my teams in Gamma Innovation he developed the UI for a distributed system based on a Spring Boot micro service backend and a React frontend. His work was crucial in developing a workflow designer, a fundamental building block of the project. Working with him was a pleasure for the whole team.",
+    linkedin: "https://www.linkedin.com/in/danilo-colombo-0339b54/",
+    initials: "DC",
+  },
+  {
     name: "Ignas Maziliauskas",
     role: "Legal Representative",
     relationship: "Civitta",
@@ -93,7 +101,7 @@ export function RecommendationsSection() {
           </p>
         </motion.div>
 
-        {/* Recommendations grid */}
+        {/* Recommendations grid - 2 columns with 3rd card centered below */}
         <motion.div style={{ y }} className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-5xl mx-auto">
           {recommendations.map((rec, index) => (
             <motion.div
@@ -102,32 +110,32 @@ export function RecommendationsSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.7, delay: index * 0.15 }}
-              className="group relative"
+              className={`group relative ${index === 2 ? "md:col-span-2 md:max-w-[calc(50%-1rem)] md:mx-auto" : ""}`}
             >
               <motion.div
                 className="relative h-full bg-card/60 backdrop-blur-md border border-border rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-8 overflow-hidden"
                 whileHover={{
-                  borderColor: index === 0 ? "rgba(249, 168, 117, 0.5)" : "rgba(125, 211, 168, 0.5)",
-                  boxShadow: index === 0 
+                  borderColor: index % 2 === 0 ? "rgba(249, 168, 117, 0.5)" : "rgba(125, 211, 168, 0.5)",
+                  boxShadow: index % 2 === 0 
                     ? "0 20px 60px -15px rgba(249, 168, 117, 0.2)" 
                     : "0 20px 60px -15px rgba(125, 211, 168, 0.2)",
                 }}
                 transition={{ duration: 0.3 }}
                 style={{
-                  x: mousePos.x * (index === 0 ? 0.1 : -0.1),
-                  y: mousePos.y * (index === 0 ? 0.1 : -0.1),
+                  x: mousePos.x * (index % 2 === 0 ? 0.1 : -0.1),
+                  y: mousePos.y * (index % 2 === 0 ? 0.1 : -0.1),
                 }}
               >
                 {/* Quote icon background */}
                 <div className="absolute top-4 right-4 opacity-10">
-                  <Quote className="w-24 h-24" style={{ color: index === 0 ? "#f9a875" : "#7dd3a8" }} />
+                  <Quote className="w-24 h-24" style={{ color: index % 2 === 0 ? "#f9a875" : "#7dd3a8" }} />
                 </div>
 
                 {/* Gradient accent */}
                 <div 
                   className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                   style={{
-                    background: index === 0 
+                    background: index % 2 === 0 
                       ? "radial-gradient(ellipse at top right, rgba(249, 168, 117, 0.08) 0%, transparent 60%)"
                       : "radial-gradient(ellipse at top right, rgba(125, 211, 168, 0.08) 0%, transparent 60%)",
                   }}
@@ -147,8 +155,8 @@ export function RecommendationsSection() {
                       <div 
                         className="w-14 h-14 rounded-full flex items-center justify-center font-bold text-lg"
                         style={{ 
-                          backgroundColor: index === 0 ? "rgba(249, 168, 117, 0.2)" : "rgba(125, 211, 168, 0.2)",
-                          color: index === 0 ? "#f9a875" : "#7dd3a8",
+                          backgroundColor: index % 2 === 0 ? "rgba(249, 168, 117, 0.2)" : "rgba(125, 211, 168, 0.2)",
+                          color: index % 2 === 0 ? "#f9a875" : "#7dd3a8",
                         }}
                       >
                         {rec.initials}
@@ -175,7 +183,7 @@ export function RecommendationsSection() {
                 {/* Bottom accent line */}
                 <motion.div
                   className="absolute bottom-0 left-0 h-1 rounded-b-3xl"
-                  style={{ backgroundColor: index === 0 ? "#f9a875" : "#7dd3a8" }}
+                  style={{ backgroundColor: index % 2 === 0 ? "#f9a875" : "#7dd3a8" }}
                   initial={{ width: 0 }}
                   whileInView={{ width: "100%" }}
                   viewport={{ once: true }}
