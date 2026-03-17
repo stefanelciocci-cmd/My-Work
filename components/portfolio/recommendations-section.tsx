@@ -16,20 +16,20 @@ const recommendations = [
     initials: "VC",
   },
   {
-    name: "Ignas Maziliauskas",
-    role: "Legal Representative",
-    relationship: "Civitta",
-    quote: "Stefan demonstrated exceptional adaptability to complex technical requirements and a talent for optimising development processes. His meticulous approach, analytical mindset, punctuality, and openness made him a key factor in maintaining stability and continuous performance across multiple projects.",
-    linkedin: "https://linkedin.com/in/ignas-maziliauskas",
-    initials: "IM",
-  },
-  {
     name: "Danilo Colombo",
     role: "Software Architect, Automation Architect, Java and RPA Senior Teacher",
     relationship: "Managed Stefan directly at Gamma Innovation",
     quote: "Stefan is a serious and efficient programmer. In one of my teams in Gamma Innovation he developed the UI for a distributed system based on a Spring Boot micro service backend and a React frontend. His work was crucial in developing a workflow designer, a fundamental building block of the project. Working with him was a pleasure for the whole team.",
     linkedin: "https://www.linkedin.com/in/danilo-colombo-0339b54/",
     initials: "DC",
+  },
+  {
+    name: "Ignas Maziliauskas",
+    role: "Legal Representative",
+    relationship: "Civitta",
+    quote: "Stefan demonstrated exceptional adaptability to complex technical requirements and a talent for optimising development processes. His meticulous approach, analytical mindset, punctuality, and openness made him a key factor in maintaining stability and continuous performance across multiple projects.",
+    linkedin: "https://linkedin.com/in/ignas-maziliauskas",
+    initials: "IM",
   },
 ];
 
@@ -101,8 +101,8 @@ export function RecommendationsSection() {
           </p>
         </motion.div>
 
-        {/* Recommendations grid */}
-        <motion.div style={{ y }} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-6xl mx-auto">
+        {/* Recommendations grid - 2 columns with 3rd card centered below */}
+        <motion.div style={{ y }} className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-5xl mx-auto">
           {recommendations.map((rec, index) => (
             <motion.div
               key={rec.name}
@@ -110,7 +110,7 @@ export function RecommendationsSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.7, delay: index * 0.15 }}
-              className="group relative"
+              className={`group relative ${index === 2 ? "md:col-span-2 md:max-w-[calc(50%-1rem)] md:mx-auto" : ""}`}
             >
               <motion.div
                 className="relative h-full bg-card/60 backdrop-blur-md border border-border rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-8 overflow-hidden"
