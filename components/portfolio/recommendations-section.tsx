@@ -17,7 +17,7 @@ const recommendations = [
   },
   {
     name: "Danilo Colombo",
-    role: "Software Architect, Automation Architect, Java and RPA Senior Teacher",
+    role: "Software Architect, Automation Architect",
     relationship: "Managed Stefan directly at Gamma Innovation",
     quote: "Stefan is a serious and efficient programmer. In one of my teams in Gamma Innovation he developed the UI for a distributed system based on a Spring Boot micro service backend and a React frontend. His work was crucial in developing a workflow designer, a fundamental building block of the project. Working with him was a pleasure for the whole team.",
     linkedin: "https://www.linkedin.com/in/danilo-colombo-0339b54/",
