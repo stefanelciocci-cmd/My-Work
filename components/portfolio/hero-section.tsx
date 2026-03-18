@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Linkedin, Volume2, VolumeX } from "lucide-react";
+import { Linkedin, Volume2, VolumeX, Download } from "lucide-react";
 import Link from "next/link";
 import { useRef, useState } from "react";
 import { useMouseParallax } from "@/hooks/use-parallax";
@@ -233,6 +233,16 @@ export function HeroSection() {
                   View Projects
                 </span>
               </Link>
+              <a
+                href="/Stefan_Ciocirlan_CV.pdf"
+                download="Stefan_Ciocirlan_CV.pdf"
+                className="group flex items-center gap-2 px-8 py-4 border border-border text-foreground font-semibold rounded-2xl hover:bg-card hover:border-accent/30 transition-all duration-300"
+              >
+                <Download className="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors duration-300" />
+                <span className="group-hover:text-accent transition-colors duration-300">
+                  Download CV
+                </span>
+              </a>
             </motion.div>
 
             <motion.div

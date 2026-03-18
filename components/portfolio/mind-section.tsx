@@ -422,19 +422,36 @@ export function MindSection() {
             </motion.div>
           </div>
 
-          {[...Array(15)].map((_, i) => (
+          {/* Decorative particles with fixed positions to avoid hydration mismatch */}
+          {[
+            { left: 20, top: 25, duration: 7, delay: 0.5 },
+            { left: 35, top: 40, duration: 8, delay: 1.2 },
+            { left: 50, top: 20, duration: 6, delay: 0.8 },
+            { left: 65, top: 55, duration: 9, delay: 2.1 },
+            { left: 80, top: 30, duration: 7, delay: 1.5 },
+            { left: 25, top: 60, duration: 8, delay: 0.3 },
+            { left: 45, top: 75, duration: 6, delay: 2.5 },
+            { left: 70, top: 45, duration: 9, delay: 1.8 },
+            { left: 55, top: 65, duration: 7, delay: 0.9 },
+            { left: 30, top: 35, duration: 8, delay: 2.0 },
+            { left: 75, top: 70, duration: 6, delay: 1.1 },
+            { left: 40, top: 50, duration: 9, delay: 0.6 },
+            { left: 60, top: 28, duration: 7, delay: 2.3 },
+            { left: 22, top: 72, duration: 8, delay: 1.4 },
+            { left: 85, top: 55, duration: 6, delay: 0.7 },
+          ].map((particle, i) => (
             <motion.div
               key={i}
               className="absolute w-1 h-1 rounded-full bg-primary/50"
               style={{
-                left: `${15 + Math.random() * 70}%`,
-                top: `${15 + Math.random() * 70}%`,
+                left: `${particle.left}%`,
+                top: `${particle.top}%`,
               }}
               animate={{ opacity: [0.2, 0.7, 0.2], scale: [1, 1.5, 1] }}
               transition={{
-                duration: 6 + Math.random() * 4,
+                duration: particle.duration,
                 repeat: Infinity,
-                delay: Math.random() * 3,
+                delay: particle.delay,
               }}
             />
           ))}
