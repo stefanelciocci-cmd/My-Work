@@ -1,30 +1,26 @@
-"use client";
-
-import { Navigation } from "@/components/portfolio/navigation";
-import { HeroSection } from "@/components/portfolio/hero-section";
-import { MindSection } from "@/components/portfolio/mind-section";
-import { SkillsSection } from "@/components/portfolio/skills-section";
-import { ProjectsSection } from "@/components/portfolio/projects-section";
-import { RecommendationsSection } from "@/components/portfolio/recommendations-section";
-import { GameSection } from "@/components/portfolio/game-section";
-import { ContactSection } from "@/components/portfolio/contact-section";
-import { Footer } from "@/components/portfolio/footer";
-import { useSmoothScroll } from "@/hooks/use-parallax";
+import { About } from "@/components/site/about";
+import { Contact } from "@/components/site/contact";
+import { Footer } from "@/components/site/footer";
+import { Hero } from "@/components/site/hero";
+import { Navigation } from "@/components/site/navigation";
+import { Play } from "@/components/site/play";
+import { Skills } from "@/components/site/skills";
+import { SmoothScroll } from "@/components/site/smooth-scroll";
+import { Testimonials } from "@/components/site/testimonials";
+import { Work } from "@/components/site/work";
 
 export default function Portfolio() {
-  // Enable smooth scrolling
-  useSmoothScroll();
-  
   return (
-    <main className="relative min-h-screen bg-background text-foreground overflow-x-hidden">
+    <main className="relative min-h-screen overflow-x-clip bg-background text-foreground">
+      <SmoothScroll />
       <Navigation />
-      <HeroSection />
-      <MindSection />
-      <SkillsSection />
-      <ProjectsSection />
-      <RecommendationsSection />
-      <GameSection />
-      <ContactSection />
+      <Hero />
+      <About />
+      <Skills />
+      <Work />
+      <Testimonials />
+      <Play />
+      <Contact />
       <Footer />
     </main>
   );
